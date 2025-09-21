@@ -415,7 +415,7 @@ def sync_old_orders():
 		sync_sales_order(order, request_id=log.name)
 
 	shopify_setting = frappe.get_doc(SETTING_DOCTYPE)
-	shopify_setting.sync_old_orders = 0
+	# shopify_setting.sync_old_orders = 0
 	shopify_setting.save()
 
 
