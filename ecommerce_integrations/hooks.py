@@ -140,7 +140,6 @@ scheduler_events = {
 	"daily": [],
 	"daily_long": ["ecommerce_integrations.zenoti.doctype.zenoti_settings.zenoti_settings.sync_stocks"],
 	"hourly": [
-		"ecommerce_integrations.shopify.order.sync_old_orders",
 		"ecommerce_integrations.amazon.doctype.amazon_sp_api_settings.amazon_sp_api_settings.schedule_get_order_details",
 	],
 	"hourly_long": [
@@ -154,6 +153,7 @@ scheduler_events = {
 	"cron": {
 		# Every five minutes
 		"*/5 * * * *": [
+			"ecommerce_integrations.shopify.order.sync_old_orders",
 			"ecommerce_integrations.unicommerce.order.sync_new_orders",
 			"ecommerce_integrations.unicommerce.inventory.update_inventory_on_unicommerce",
 			"ecommerce_integrations.unicommerce.delivery_note.prepare_delivery_note",
