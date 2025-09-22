@@ -112,6 +112,7 @@ def create_sales_order(shopify_order, setting, company=None):
 				"transaction_date": getdate(shopify_order.get("created_at")) or nowdate(),
 				"delivery_date": getdate(shopify_order.get("created_at")) or nowdate(),
 				"company": setting.company,
+				"custom_payment_gateway_names": ", ".join(shopify_order.get("payment_gateway_names") or []),
 				"selling_price_list": get_dummy_price_list(),
 				"ignore_pricing_rule": 1,
 				"items": items,
