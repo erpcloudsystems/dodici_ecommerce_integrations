@@ -424,6 +424,10 @@ def sync_old_orders():
 	orders = _fetch_old_orders(shopify_setting.old_orders_from, shopify_setting.old_orders_to)
 
 	for order in orders:
+		# Check if order already exists before creating log to avoid duplicate logs
+		if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order["id"])}):
+			continue
+
 		log = create_shopify_log(
 			method=EVENT_MAPPER["orders/create"], request_data=json.dumps(order), make_new=True
 		)

@@ -125,12 +125,13 @@ def _create_sales_invoices(unicommerce_order, sales_order, client: UnicommerceAP
 def create_order(payload: UnicommerceOrder, request_id: str | None = None, client=None) -> None:
 	order = payload
 
+	# Check if order already exists before creating log to avoid duplicate logs
 	existing_so = frappe.db.get_value("Sales Order", {ORDER_CODE_FIELD: order["code"]})
 	if existing_so:
 		so = frappe.get_doc("Sales Order", existing_so)
 		return so
 
-	# If a sales order already exists, then every time it's executed
+	# Only create log for new orders
 	if request_id is None:
 		log = create_unicommerce_log(
 			method="ecommerce_integrations.unicommerce.order.create_order", request_data=payload
