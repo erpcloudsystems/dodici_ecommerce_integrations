@@ -35,7 +35,7 @@ def sync_sales_order(payload, request_id=None):
 	frappe.flags.request_id = request_id
 
 	if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order["id"])}):
-		create_shopify_log(status="Invalid", message="Sales order already exists, not synced")
+		# create_shopify_log(status="Invalid", message="Sales order already exists, not synced")
 		return
 	try:
 		shopify_customer = order.get("customer") if order.get("customer") is not None else {}
@@ -88,6 +88,18 @@ def create_sales_order(shopify_order, setting, company=None):
 			getdate(shopify_order.get("created_at")),
 			taxes_inclusive=shopify_order.get("taxes_included"),
 		)
+		contact_person = frappe.db.get_value(
+			"Dynamic Link",
+			{
+				"link_doctype": "Customer",
+				"link_name": customer,
+				"parenttype": "Contact",
+			},
+			"parent"
+		)
+		mobile_no = None
+		if contact_person:
+			mobile_no = frappe.db.get_value("Contact", contact_person, "mobile_no")
 
 		if not items:
 			message = (
@@ -117,6 +129,8 @@ def create_sales_order(shopify_order, setting, company=None):
 				"ignore_pricing_rule": 1,
 				"items": items,
 				"taxes": taxes,
+				"contact_person": contact_person or "",
+				"mobile_no": mobile_no or "",
 				"tax_category": get_dummy_tax_category(),
 			}
 		)

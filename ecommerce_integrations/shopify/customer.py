@@ -101,7 +101,7 @@ class ShopifyCustomer(EcommerceCustomer):
 		phone_no = shopify_customer.get("phone") or shopify_customer.get("default_address", {}).get("phone")
 
 		if validate_phone_number(phone_no, throw=False):
-			contact_fields["phone_nos"] = [{"phone": phone_no, "is_primary_phone": True}]
+			contact_fields["phone_nos"] = [{"phone": phone_no, "is_primary_phone": True,"is_primary_mobile_no":True}]
 
 		super().create_customer_contact(contact_fields)
 
