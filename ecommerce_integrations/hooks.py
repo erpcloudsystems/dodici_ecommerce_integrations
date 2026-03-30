@@ -148,7 +148,9 @@ scheduler_events = {
 		"ecommerce_integrations.unicommerce.status_updater.update_sales_order_status",
 		"ecommerce_integrations.unicommerce.status_updater.update_shipping_package_status",
 	],
-	"weekly": [],
+	"weekly": [
+		"ecommerce_integrations.ecommerce_integrations.doctype.ecommerce_integration_log.ecommerce_integration_log.clear_old_logs"
+	],
 	"monthly": [],
 	"cron": {
 		# Every five minutes
@@ -215,5 +217,5 @@ before_tests = "ecommerce_integrations.utils.before_test.before_tests"
 
 
 default_log_clearing_doctypes = {
-	"Ecommerce Integration Log": 120,
+	"Ecommerce Integration Log": 7,
 }

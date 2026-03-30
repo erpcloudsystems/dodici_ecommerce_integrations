@@ -30,11 +30,25 @@ class EcommerceIntegrationLog(Document):
 			self.title = title if len(title) < 100 else title[:100] + "..."
 
 	@staticmethod
-	def clear_old_logs(days=90):
+	def clear_old_logs(days=7):
 		table = frappe.qb.DocType("Ecommerce Integration Log")
 		frappe.db.delete(
 			table, filters=(table.modified < (Now() - Interval(days=days))) & (table.status == "Success")
 		)
+
+
+def clear_old_logs(days=7):
+	"""Clear Ecommerce Integration Logs older than specified days.
+	
+	This function is called weekly by the scheduler to prevent
+	the database from growing too large. Only logs with status 'Success'
+	are deleted to preserve error logs for debugging.
+	"""
+	table = frappe.qb.DocType("Ecommerce Integration Log")
+	frappe.db.delete(
+		table, filters=(table.modified < (Now() - Interval(days=days))) & (table.status == "Success")
+	)
+	frappe.db.commit()
 
 
 def create_log(
